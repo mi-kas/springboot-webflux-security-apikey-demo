@@ -1,2 +1,2 @@
-# springboot-webflux-security-apikey-demo
-Example of an API key authentication with a Spring Boot WebFlux application using Spring Security
+# Spring Boot WebFlux + Spring Security + API Key Auth + Kotlin
+Showcase of a Spring Boot WebFlux application using API key authentication with Spring Security.
