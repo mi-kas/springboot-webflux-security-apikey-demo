@@ -1,5 +1,6 @@
 package dev.michaelkaserer.demo.auth
 
+import dev.michaelkaserer.demo.ApplicationProps
 import dev.michaelkaserer.demo.user.domain.UserService
 import kotlinx.coroutines.reactor.mono
 import org.springframework.security.core.Authentication
@@ -13,13 +14,16 @@ import reactor.core.publisher.Mono
  * that can be checked by the {@link KeyAuthenticationManager}.
  */
 @Component
-class ApiKeyAuthConverter(private val userService: UserService) :
+class ApiKeyAuthConverter(
+    private val userService: UserService,
+    private val applicationProps: ApplicationProps
+) :
     ServerAuthenticationConverter {
-    private val API_KEY_HEADER_NAME = "X-API-KEY"
 
     override fun convert(exchange: ServerWebExchange?): Mono<Authentication> = mono {
         val apiKey =
-            exchange?.request?.headers?.getFirst(API_KEY_HEADER_NAME) ?: return@mono null
+            exchange?.request?.headers?.getFirst(applicationProps.auth.headerName)
+                ?: return@mono null
 
         val user = userService.getByApiKey(apiKey) ?: return@mono null
 
