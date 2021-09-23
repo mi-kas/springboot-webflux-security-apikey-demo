@@ -3,6 +3,7 @@ package dev.michaelkaserer.demo.config
 import dev.michaelkaserer.demo.auth.ApiKeyAuthConverter
 import dev.michaelkaserer.demo.auth.ApiKeyAuthManager
 import dev.michaelkaserer.demo.user.db.UserRole
+import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -35,7 +36,7 @@ class SecurityConfig {
         apiKeyAuthWebFilter: AuthenticationWebFilter
     ): SecurityWebFilterChain = http
         .authorizeExchange()
-        .pathMatchers("/actuator/**").permitAll()
+        .matchers(EndpointRequest.toAnyEndpoint()).permitAll()
         .pathMatchers(HttpMethod.POST, "/api/v1/user").hasRole(UserRole.ADMIN.name)
         .pathMatchers(HttpMethod.GET, "/api/v1/user").hasRole(UserRole.ADMIN.name)
         .anyExchange().authenticated()
